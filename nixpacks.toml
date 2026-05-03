@@ -4,10 +4,11 @@ nixPkgs = ["php83", "php83Extensions.pdo_mysql", "php83Extensions.mbstring", "ph
 [phases.build]
 cmds = [
   "composer install --no-dev --optimize-autoloader",
-  "php artisan key:generate --force",
-  "php artisan config:cache",
-  "php artisan route:cache"
+  "php artisan key:generate --force"
 ]
 
 [start]
 cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
+
+[variables]
+PHP_VERSION = "8.3"
