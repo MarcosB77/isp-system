@@ -1,14 +1,17 @@
 [phases.setup]
 nixPkgs = ["php83", "php83Extensions.pdo_mysql", "php83Extensions.mbstring", "php83Extensions.xml", "php83Extensions.curl", "php83Extensions.zip", "php83Extensions.bcmath", "composer"]
 
+[phases.install]
+dependsOn = ["setup"]
+cmds = ["composer install --no-dev --optimize-autoloader"]
+
 [phases.build]
-cmds = [
-  "composer install --no-dev --optimize-autoloader",
-  "php artisan key:generate --force"
-]
+dependsOn = ["install"]
+cmds = ["php artisan key:generate --force"]
 
 [start]
 cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=$PORT"
 
 [variables]
+NIXPACKS_NODE_VERSION = "0"
 PHP_VERSION = "8.3"
