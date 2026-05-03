@@ -5,6 +5,7 @@ namespace App\Domains\Client\Models;
 use App\Domains\Billing\Models\Invoice;
 use App\Domains\Network\Models\Connection;
 use App\Domains\Support\Models\Ticket;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Client extends Model
 {
     use SoftDeletes;
-
+    use HasFactory; 
     protected $fillable = [
         'name',
         'email',
@@ -23,7 +24,15 @@ class Client extends Model
         'city',
         'state',
         'status',
+        'plan_id',
+        'due_day',
     ];
+
+    // O método novo entra aqui embaixo:
+    protected static function newFactory()
+    {
+        return \Database\Factories\ClientFactory::new();
+    }
 
     /**
      * Relacionamento com todos os contratos do cliente.
@@ -69,6 +78,11 @@ class Client extends Model
     }
 
     // --- Helpers de Estado ---
+
+    public function plan()
+    {
+        return $this->belongsTo(\App\Domains\Billing\Models\Plan::class);
+    }
 
     public function isActive(): bool
     {

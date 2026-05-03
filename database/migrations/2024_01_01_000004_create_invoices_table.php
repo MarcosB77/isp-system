@@ -8,7 +8,7 @@ return new class extends Migration {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained();
-            $table->foreignId('contract_id')->constrained();
+            $table->foreignId('contract_id')->nullable()->constrained();
             $table->decimal('amount', 8, 2);
             $table->date('due_date');
             $table->date('paid_at')->nullable();

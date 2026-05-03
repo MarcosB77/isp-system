@@ -3,11 +3,18 @@ namespace App\Domains\Billing\Models;
 
 use App\Domains\Client\Models\Client;
 use App\Domains\Client\Models\Contract;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Invoice extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return \Database\Factories\InvoiceFactory::new();
+    }
     protected $fillable = [
         'client_id','contract_id','amount','due_date','paid_at','status','payment_method',
     ];

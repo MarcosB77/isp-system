@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Domains\Client\Services;
 
 use App\Domains\Client\DTOs\CreateClientDTO;
@@ -18,7 +19,13 @@ class ClientService
     public function create(CreateClientDTO $dto): Client
     {
         return DB::transaction(function () use ($dto) {
-            $client = Client::create((array) $dto);
+            $client = Client::create([
+                'name'   => $dto->name,
+                'email'  => $dto->email,
+                'cpf'    => $dto->cpf,
+                'status' => 'active',
+            ]);
+
             event(new ClientCreated($client));
             Log::info("Cliente criado: {$client->id} — {$client->name}");
             return $client;
